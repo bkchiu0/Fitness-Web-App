@@ -4,6 +4,8 @@ import compression from "compression";
 import cors from "cors";
 import bodyParser from "body-parser";
 
+import loader from "./loaders";
+
 const app = express();
 const port = 27017;
 const host = "192.168.99.100";
@@ -20,6 +22,8 @@ async function connect() {
   app.use(bodyParser.json());
   // Compresses all response json bodies
   app.use(compression());
+
+  await loader(app, connection);
 
   return Promise.resolve();
 }
