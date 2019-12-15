@@ -1,5 +1,9 @@
 import { IAuthHandler } from "../handlers/authentication";
 
 class AuthController {
-  constructor(authHandler: IAuthHandler) {}
+  private handler: IAuthHandler;
+
+  constructor(authHandler: IAuthHandler) {
+    this.handler = authHandler;
+  }
 }
