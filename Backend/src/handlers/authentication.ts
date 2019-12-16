@@ -26,22 +26,7 @@ class AuthHandler implements IAuthHandler {
 
     // Create and validate user model
     let model = new UserModel(user);
-    await model.validate(err => {
-      const { firstName, lastName, email, password } = err.errors;
-      if (firstName.message) {
-        throw new Error(firstName.message);
-      }
-      if (lastName.message) {
-        throw new Error(lastName.message);
-      }
-      if (email.message) {
-        throw new Error(email.message);
-      }
-      if (password.message) {
-        throw new Error(password.message);
-      }
-      throw new Error("Unknown validation error.");
-    });
+    await model.validate();
 
     // Check for duplicates
     let dup = await UserModel.findOne({ email: user.email });
@@ -50,9 +35,7 @@ class AuthHandler implements IAuthHandler {
     }
 
     model.password = await bcrypt.hash(model.password, 10);
-    await model.save((err: Error) => {
-      throw new Error("Failed to save user");
-    });
+    await model.save();
 
     // Create a jwt token
     const token = this.generateAuthToken(user);

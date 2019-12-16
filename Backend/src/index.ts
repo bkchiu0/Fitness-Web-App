@@ -12,10 +12,16 @@ const ownPort = 3001;
 const host = "192.168.99.100";
 
 async function connect() {
-  const connection = await mongoose.connect(`mongodb://${host}:${dbPort}/db`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  });
+  const connection = await mongoose.connect(
+    `mongodb://${host}:${dbPort}/admin`,
+    {
+      user: "root",
+      pass: "password",
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
+  );
+
   // Enable CORS
   app.use(cors());
   // Parses incoming requests as JSON if parsable

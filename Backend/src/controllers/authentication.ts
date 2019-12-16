@@ -18,7 +18,11 @@ class AuthController implements IController {
     return this.router;
   }
 
-  private async createUser(req: Request, res: Response, next: NextFunction) {
+  private createUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const { firstName, lastName, email, password } = req.body;
       const { token, uuid } = await this.handler.createUser({
@@ -36,10 +40,10 @@ class AuthController implements IController {
           id: uuid
         });
     } catch (e) {
-      console.error(`Error: ${e.message}`);
+      console.error(`Error: ${e}`);
       res.status(400).send(e);
     }
-  }
+  };
 }
 
 export default AuthController;
