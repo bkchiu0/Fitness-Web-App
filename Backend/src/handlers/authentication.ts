@@ -3,7 +3,7 @@ import uuid from "uuid/v4";
 import bcrypt from "bcryptjs";
 
 import UserModel from "../models/user";
-import IUser from "../Interfaces/IUser";
+import IUser from "../interfaces/IUser";
 import config from "../config/defualt.json";
 
 /**
@@ -50,7 +50,7 @@ class AuthHandler implements IAuthHandler {
     }
 
     model.password = await bcrypt.hash(model.password, 10);
-    await model.save(err => {
+    await model.save((err: Error) => {
       throw new Error("Failed to save user");
     });
 

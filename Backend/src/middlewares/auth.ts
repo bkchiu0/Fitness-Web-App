@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-import IUser from "../Interfaces/IUser";
 import config from "../config/defualt.json";
 
 /**

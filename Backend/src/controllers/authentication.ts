@@ -1,9 +1,9 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import IUser from "../Interfaces/IUser";
+import IController from "../interfaces/IController";
 import { IAuthHandler } from "../handlers/authentication";
 
-class AuthController {
+class AuthController implements IController {
   private router: Router;
   private handler: IAuthHandler;
 
@@ -28,8 +28,16 @@ class AuthController {
         password,
         uuid: undefined
       });
+
+      res
+        .status(201)
+        .header("authentication", token)
+        .send({
+          id: uuid
+        });
     } catch (e) {
       console.error(`Error: ${e.message}`);
+      res.status(400).send(e);
     }
   }
 }

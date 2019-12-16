@@ -7,11 +7,12 @@ import bodyParser from "body-parser";
 import loader from "./loaders";
 
 const app = express();
-const port = 27017;
+const dbPort = 27017;
+const ownPort = 3001;
 const host = "192.168.99.100";
 
 async function connect() {
-  const connection = await mongoose.connect(`mongodb://${host}:${port}/db`, {
+  const connection = await mongoose.connect(`mongodb://${host}:${dbPort}/db`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
@@ -29,8 +30,8 @@ async function connect() {
 
 connect()
   .then(() => {
-    app.listen(port, () =>
-      console.log(`Node is now listening on ${host}:${port}`)
+    app.listen(ownPort, () =>
+      console.log(`Node is now listening on ${host}:${ownPort}`)
     );
   })
   .catch(() => {
