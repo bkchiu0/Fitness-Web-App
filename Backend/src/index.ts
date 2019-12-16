@@ -15,7 +15,6 @@ async function connect() {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
-
   // Enable CORS
   app.use(cors());
   // Parses incoming requests as JSON if parsable
