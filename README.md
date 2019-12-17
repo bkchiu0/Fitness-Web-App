@@ -13,6 +13,12 @@ MongoDB Express React Node
 
 ## Commands
 
+Build all containers. Used if you have new code to run on docker.
+
+```bash
+docker-compose build
+```
+
 Deploy all the containers in the background
 
 ```bash
@@ -23,6 +29,12 @@ Deploy all the containers with live log output
 
 ```bash
 docker-compose up
+```
+
+Deploy all the build new containers and deploy in the background
+
+```bash
+docker-compose up -d --build
 ```
 
 Stop and remove containers
