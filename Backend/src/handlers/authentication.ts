@@ -33,7 +33,11 @@ class AuthHandler implements IAuthHandler {
     user.uuid = id;
 
     let model = new UserModel(user);
-    await model.validate();
+    try {
+      await model.validate();
+    } catch (e) {
+      return Promise.reject(new TypedError(ErrorType.Validation, e.message));
+    }
 
     let dup = await UserModel.findOne({ email: user.email });
     if (dup) {

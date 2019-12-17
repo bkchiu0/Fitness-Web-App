@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 
 import IController from "../interfaces/IController";
 import { IAuthHandler } from "../handlers/authentication";
-import { ErrorType, IError } from "../interfaces/IError";
+import { IError } from "../interfaces/IError";
 
 class AuthController implements IController {
   private router: Router;
