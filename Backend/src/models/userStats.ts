@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import IUserStats from "../interfaces/IUserStats";
 
 const UserStats = new mongoose.Schema({
   uuid: {
@@ -53,4 +54,7 @@ const UserStats = new mongoose.Schema({
 
 UserStats.index({ uuid: 1 }, { unique: true });
 
-export default mongoose.model<mongoose.Document>("UserStats", UserStats);
+export default mongoose.model<IUserStats & mongoose.Document>(
+  "UserStats",
+  UserStats
+);

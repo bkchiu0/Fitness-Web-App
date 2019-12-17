@@ -16,7 +16,7 @@ export interface IAuthHandler {
    * Creates and saves a new user into the mongodb user collection
    * @param user the user to be created (all fields need to be within contraints)
    */
-  createUser(user: IUser): Promise<string>;
+  createUser(user: IUser): Promise<{ token: string; uuid: string }>;
 
   /**
    * Verifies the user's credentials and logs in the user, returning a jwt token that is valid for an hour
@@ -26,9 +26,11 @@ export interface IAuthHandler {
 }
 
 class AuthHandler implements IAuthHandler {
-  constructor() {}
+  public constructor() {}
 
-  createUser = async (user: IUser): Promise<string> => {
+  public createUser = async (
+    user: IUser
+  ): Promise<{ token: string; uuid: string }> => {
     const id = uuid();
     user.uuid = id;
 
@@ -36,32 +38,26 @@ class AuthHandler implements IAuthHandler {
     try {
       await model.validate();
     } catch (e) {
-      return Promise.reject(new TypedError(ErrorType.Validation, e.message));
+      throw new TypedError(ErrorType.Validation, e.message);
     }
 
     let dup = await UserModel.findOne({ email: user.email });
     if (dup) {
-      return Promise.reject(
-        new TypedError(ErrorType.Validation, "Email already exists")
-      );
+      throw new TypedError(ErrorType.Validation, "Email already exists");
     }
 
     model.password = await bcrypt.hash(model.password, 10);
     await model.save();
 
     const token = this.generateAuthToken(user);
-    return Promise.resolve(token);
+    return { token, uuid: id };
   };
 
-  loginUser = async (user: IUser): Promise<string> => {
+  public loginUser = async (user: IUser): Promise<string> => {
     if (!user.email) {
-      return Promise.reject(
-        new TypedError(ErrorType.Validation, "Email cannot be blank.")
-      );
+      throw new TypedError(ErrorType.Validation, "Email cannot be blank.");
     } else if (!user.password) {
-      return Promise.reject(
-        new TypedError(ErrorType.Validation, "Password cannot be blank.")
-      );
+      throw new TypedError(ErrorType.Validation, "Password cannot be blank.");
     }
 
     const account = await UserModel.findOne({ email: user.email });
@@ -75,11 +71,9 @@ class AuthHandler implements IAuthHandler {
         password: account.password,
         uuid: account.uuid
       });
-      return Promise.resolve(token);
+      return token;
     }
-    return Promise.reject(
-      new TypedError(ErrorType.Validation, "Password is incorrect")
-    );
+    throw new TypedError(ErrorType.Validation, "Password is incorrect");
   };
 
   private generateAuthToken(user: IUser): string {

@@ -3,14 +3,17 @@ import { Router, Request, Response } from "express";
 import IController from "../interfaces/IController";
 import { IAuthHandler } from "../handlers/authentication";
 import { IError } from "../interfaces/IError";
+import { IUserStatsHandler } from "../handlers/userStats";
 
 class AuthController implements IController {
   private router: Router;
   private handler: IAuthHandler;
+  private statsHandler: IUserStatsHandler;
 
-  constructor(authHandler: IAuthHandler) {
+  constructor(authHandler: IAuthHandler, statsHandler: IUserStatsHandler) {
     this.router = Router();
     this.handler = authHandler;
+    this.statsHandler = statsHandler;
 
     this.router.post("/create", this.createUser);
     this.router.post("/login", this.loginUser);
@@ -23,13 +26,15 @@ class AuthController implements IController {
   private createUser = async (req: Request, res: Response) => {
     try {
       const { firstName, lastName, email, password } = req.body;
-      const token = await this.handler.createUser({
+      const { token, uuid } = await this.handler.createUser({
         firstName,
         lastName,
         email,
         password,
         uuid: undefined
       });
+
+      await this.statsHandler.createNewStats(uuid);
 
       res
         .status(201)
