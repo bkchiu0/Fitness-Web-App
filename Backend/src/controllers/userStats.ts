@@ -15,7 +15,7 @@ class UserStatsController implements IController {
     this.router = Router();
 
     this.router.get("/get", auth, this.getUserStats);
-    this.router.post("/action/create", auth, this.createAction);
+    this.router.post("/action", auth, this.createAction);
   }
 
   public getRouter = (): Router => {

@@ -28,16 +28,16 @@ export interface IUserStatsHandler {
 }
 
 class UserStatsHandler implements IUserStatsHandler {
-  private EXP_GAIN_CONST = 100;
+  private EXP_GAIN_CONST: number;
   public constructor(constant?: number) {
-    this.EXP_GAIN_CONST = constant;
+    this.EXP_GAIN_CONST = constant ? constant : 100;
   }
 
   public createNewStats = async (uuid: string): Promise<void> => {
     if (!uuid) {
       throw new TypedError(ErrorType.Validation, "No uuid was provided.");
     }
-    const dup = UserStatsModel.findOne({ uuid });
+    const dup = await UserStatsModel.findOne({ uuid });
     if (dup) {
       throw new TypedError(ErrorType.Internal, "UUID already exists.");
     }
@@ -102,24 +102,24 @@ class UserStatsHandler implements IUserStatsHandler {
       case ActionType.StrengthTraining:
         stats.healthExp += 0.1 * this.EXP_GAIN_CONST * durationMultiplier;
         stats.strengthExp += 0.8 * this.EXP_GAIN_CONST * durationMultiplier;
-        stats.speed += 0.2 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.speedExp += 0.2 * this.EXP_GAIN_CONST * durationMultiplier;
     }
     // Level up if possible
-    if (stats.healthExp >= this.calculateLevelCap(stats.health)) {
-      stats.health++;
+    while (stats.healthExp >= this.calculateLevelCap(stats.health)) {
       stats.healthExp -= this.calculateLevelCap(stats.health);
+      stats.health++;
     }
-    if (stats.speedExp >= this.calculateLevelCap(stats.speed)) {
-      stats.speed++;
+    while (stats.speedExp >= this.calculateLevelCap(stats.speed)) {
       stats.speedExp -= this.calculateLevelCap(stats.speed);
+      stats.speed++;
     }
-    if (stats.staminaExp >= this.calculateLevelCap(stats.stamina)) {
-      stats.stamina++;
+    while (stats.staminaExp >= this.calculateLevelCap(stats.stamina)) {
       stats.staminaExp -= this.calculateLevelCap(stats.stamina);
+      stats.stamina++;
     }
-    if (stats.strengthExp >= this.calculateLevelCap(stats.strength)) {
-      stats.strength++;
+    while (stats.strengthExp >= this.calculateLevelCap(stats.strength)) {
       stats.strengthExp -= this.calculateLevelCap(stats.strength);
+      stats.strength++;
     }
   };
 
