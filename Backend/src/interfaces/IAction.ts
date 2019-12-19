@@ -9,5 +9,3 @@ export interface IAction {
   type: ActionType;
   duration: number;
 }
-
-export default IAction;

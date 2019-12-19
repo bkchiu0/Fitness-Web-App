@@ -28,9 +28,12 @@ export interface IUserStatsHandler {
 }
 
 class UserStatsHandler implements IUserStatsHandler {
-  public constructor() {}
+  private EXP_GAIN_CONST = 100;
+  public constructor(constant?: number) {
+    this.EXP_GAIN_CONST = constant;
+  }
 
-  public createNewStats = async (uuid: String): Promise<void> => {
+  public createNewStats = async (uuid: string): Promise<void> => {
     if (!uuid) {
       throw new TypedError(ErrorType.Validation, "No uuid was provided.");
     }
@@ -63,8 +66,65 @@ class UserStatsHandler implements IUserStatsHandler {
     action: IAction
   ): Promise<IUserStats> => {
     const stats = await UserStatsModel.findOne({ uuid });
+    this.updateStats(stats, action);
     await stats.save();
-    return userStatsFactory(undefined);
+    return userStatsFactory(
+      undefined,
+      stats.health,
+      stats.healthExp,
+      stats.strength,
+      stats.strengthExp,
+      stats.speed,
+      stats.speedExp,
+      stats.stamina,
+      stats.staminaExp
+    );
+  };
+
+  private updateStats = (stats: IUserStats, action: IAction): void => {
+    const durationMultiplier: number = parseFloat(
+      (action.duration / 60).toFixed(1)
+    );
+    // Add exp based on the type of exercise done
+    switch (action.type) {
+      case ActionType.BalanceTraining:
+        stats.healthExp += 0.1 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.staminaExp += 0.6 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.strengthExp += 0.4 * this.EXP_GAIN_CONST * durationMultiplier;
+      case ActionType.EnduranceTraining:
+        stats.healthExp += 0.1 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.staminaExp += 0.8 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.speedExp += 0.2 * this.EXP_GAIN_CONST * durationMultiplier;
+      case ActionType.FlexibilityTraining:
+        stats.healthExp += 0.1 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.speedExp += 0.5 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.staminaExp += 0.5 * this.EXP_GAIN_CONST * durationMultiplier;
+      case ActionType.StrengthTraining:
+        stats.healthExp += 0.1 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.strengthExp += 0.8 * this.EXP_GAIN_CONST * durationMultiplier;
+        stats.speed += 0.2 * this.EXP_GAIN_CONST * durationMultiplier;
+    }
+    // Level up if possible
+    if (stats.healthExp >= this.calculateLevelCap(stats.health)) {
+      stats.health++;
+      stats.healthExp -= this.calculateLevelCap(stats.health);
+    }
+    if (stats.speedExp >= this.calculateLevelCap(stats.speed)) {
+      stats.speed++;
+      stats.speedExp -= this.calculateLevelCap(stats.speed);
+    }
+    if (stats.staminaExp >= this.calculateLevelCap(stats.stamina)) {
+      stats.stamina++;
+      stats.staminaExp -= this.calculateLevelCap(stats.stamina);
+    }
+    if (stats.strengthExp >= this.calculateLevelCap(stats.strength)) {
+      stats.strength++;
+      stats.strengthExp -= this.calculateLevelCap(stats.strength);
+    }
+  };
+
+  private calculateLevelCap = (level: number): number => {
+    return level ** 3 + this.EXP_GAIN_CONST;
   };
 }
 

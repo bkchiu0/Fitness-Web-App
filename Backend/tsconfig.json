@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "target": "es6",
+    "lib": ["es6", "es2017", "es2018", "dom", "dom.iterable"],
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,

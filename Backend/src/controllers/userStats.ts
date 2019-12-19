@@ -4,6 +4,7 @@ import IController from "../interfaces/IController";
 import IUser from "../interfaces/IUser";
 import { IError } from "../interfaces/IError";
 import { IUserStatsHandler } from "../handlers/userStats";
+import { IAction } from "../interfaces/IAction";
 
 class UserStatsController implements IController {
   private router: Router;
@@ -14,6 +15,7 @@ class UserStatsController implements IController {
     this.router = Router();
 
     this.router.get("/get", auth, this.getUserStats);
+    this.router.post("/action/create", auth, this.createAction);
   }
 
   public getRouter = (): Router => {
@@ -26,6 +28,22 @@ class UserStatsController implements IController {
       const stats = await this.handler.getStats(authenticatedUser.uuid);
       stats.uuid = undefined;
       res.status(200).send(stats);
+    } catch (e) {
+      this.handleError(e, res);
+    }
+  };
+
+  private createAction = async (req: Request, res: Response) => {
+    try {
+      const {
+        authenticatedUser,
+        action
+      }: { authenticatedUser: IUser; action: IAction } = req.body;
+      const newStats = await this.handler.performAction(
+        authenticatedUser.uuid,
+        action
+      );
+      res.status(200).send(newStats);
     } catch (e) {
       this.handleError(e, res);
     }

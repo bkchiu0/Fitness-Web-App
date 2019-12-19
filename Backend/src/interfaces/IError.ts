@@ -6,5 +6,5 @@ export enum ErrorType {
 
 export interface IError {
   type: ErrorType;
-  message: String;
+  message: string;
 }

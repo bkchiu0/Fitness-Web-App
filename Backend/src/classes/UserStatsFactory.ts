@@ -13,15 +13,15 @@ import IUserStats from "../interfaces/IUserStats";
  * @param staminaExp
  */
 const createUserStatsObj = (
-  uuid: String,
-  health: Number = 0,
-  healthExp: Number = 0,
-  strength: Number = 0,
-  strengthExp: Number = 0,
-  speed: Number = 0,
-  speedExp: Number = 0,
-  stamina: Number = 0,
-  staminaExp: Number = 0
+  uuid: string,
+  health: number = 0,
+  healthExp: number = 0,
+  strength: number = 0,
+  strengthExp: number = 0,
+  speed: number = 0,
+  speedExp: number = 0,
+  stamina: number = 0,
+  staminaExp: number = 0
 ): IUserStats => ({
   uuid,
   health,
