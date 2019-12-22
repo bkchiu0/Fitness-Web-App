@@ -12,7 +12,11 @@ async function loadAll(app: Application, db: Mongoose) {
   const authHdlr: IAuthHandler = new AuthHandler();
   const statsHdlr: IUserStatsHandler = new UserStatsHandler();
 
-  const authCtlr: IController = new AuthController(authHdlr, statsHdlr);
+  const authCtlr: IController = new AuthController(
+    authHdlr,
+    statsHdlr,
+    authenticate
+  );
   app.use("/auth/users", authCtlr.getRouter());
 
   const statsCtlr: IController = new UserStatsController(

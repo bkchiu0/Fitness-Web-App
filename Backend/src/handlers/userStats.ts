@@ -15,6 +15,11 @@ export interface IUserStatsHandler {
    */
   createNewStats(uuid: string): Promise<void>;
   /**
+   * Deletes the the users stats.
+   * @param uuid the id of the requested
+   */
+  deleteStats(uuid: string): Promise<void>;
+  /**
    * Retrieves the user stats given the user id.
    * @param uuid the id of the requested
    */
@@ -44,6 +49,13 @@ class UserStatsHandler implements IUserStatsHandler {
     const user = new UserStatsModel(userStatsFactory(uuid));
 
     await user.save();
+  };
+
+  public deleteStats = async (uuid: string) => {
+    if (!uuid) {
+      throw new TypedError(ErrorType.Validation, "No uuid was provided.");
+    }
+    await UserStatsModel.deleteOne({ uuid });
   };
 
   public getStats = async (uuid: String): Promise<IUserStats> => {
