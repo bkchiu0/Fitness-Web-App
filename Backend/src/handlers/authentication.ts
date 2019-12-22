@@ -19,6 +19,12 @@ export interface IAuthHandler {
   createUser(user: IUser): Promise<{ token: string; uuid: string }>;
 
   /**
+   * Deletes a user and all related entries in all collections in the database
+   * @param user The user to be deleted
+   */
+  deleteUser(user: IUser): Promise<void>;
+
+  /**
    * Verifies the user's credentials and logs in the user, returning a jwt token that is valid for an hour
    * @param user user info (email and password required)
    */
@@ -51,6 +57,16 @@ class AuthHandler implements IAuthHandler {
 
     const token = this.generateAuthToken(user);
     return { token, uuid: id };
+  };
+
+  public deleteUser = async (user: IUser): Promise<void> => {
+    if (!user.email) {
+      throw new TypedError(
+        ErrorType.Internal,
+        "Email missing, cannot delete user."
+      );
+    }
+    await UserModel.deleteOne({ email: user.email });
   };
 
   public loginUser = async (user: IUser): Promise<string> => {
