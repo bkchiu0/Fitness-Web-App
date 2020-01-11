@@ -73,6 +73,7 @@ class AuthController implements IController {
       });
       await this.handler.deleteUser(authenticatedUser.email);
       await this.statsHandler.deleteStats(authenticatedUser.uuid);
+      res.status(200).send();
     } catch (e) {
       this.handleError(e, res);
     }

@@ -60,7 +60,7 @@ class AuthHandler implements IAuthHandler {
   };
 
   public deleteUser = async (email: string): Promise<void> => {
-    if (email) {
+    if (!email) {
       throw new TypedError(
         ErrorType.Internal,
         "Email missing, cannot delete user."
