@@ -1,14 +1,16 @@
 import React from "react";
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, css } from "@emotion/core";
 
 type PageContainerProps = {
   children: React.ReactNode;
+  className?: string;
 };
 
-const RegisterForm: React.FC<PageContainerProps> = (
+const PageContainer: React.FC<PageContainerProps> = (
   props: PageContainerProps
 ) => {
+  const { className } = props;
   return (
     <div
       css={{
@@ -18,10 +20,15 @@ const RegisterForm: React.FC<PageContainerProps> = (
         width: "60%",
         margin: "auto"
       }}
+      className={className}
     >
       {props.children}
     </div>
   );
 };
 
-export default RegisterForm;
+PageContainer.defaultProps = {
+  className: undefined
+};
+
+export default PageContainer;

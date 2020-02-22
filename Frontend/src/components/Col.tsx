@@ -5,16 +5,18 @@ import { jsx } from "@emotion/core";
 type ColProps = {
   children: React.ReactNode;
   reversed?: boolean;
+  className?: string;
 };
 
 const Col: React.FC<ColProps> = (props: ColProps) => {
-  const { reversed } = props;
+  const { reversed, className } = props;
   return (
     <div
       css={{
         display: "flex",
         flexDirection: reversed ? "column-reverse" : "column"
       }}
+      className={className}
     >
       {props.children}
     </div>
@@ -22,7 +24,8 @@ const Col: React.FC<ColProps> = (props: ColProps) => {
 };
 
 Col.defaultProps = {
-  reversed: false
+  reversed: false,
+  className: undefined
 };
 
 export default Col;
