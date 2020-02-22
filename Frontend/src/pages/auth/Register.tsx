@@ -1,5 +1,7 @@
 import React from "react";
 import { RouteProps } from "react-router";
+/** @jsx jsx */
+import { jsx, css } from "@emotion/core";
 
 import PageContainer from "components/PageContainer";
 import Col from "components/Col";
@@ -11,7 +13,7 @@ const RegisterForm: React.FC<RegisterFormProps> = (
 ) => {
   return (
     <PageContainer>
-      <Col>
+      <Col styles={css({ flex: "0 1 25%" })}>
         <label>First Name</label>
         <input type="text" />
 

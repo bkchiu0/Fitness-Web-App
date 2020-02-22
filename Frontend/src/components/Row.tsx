@@ -1,22 +1,24 @@
 import React from "react";
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, SerializedStyles } from "@emotion/core";
 
 type RowProps = {
   children: React.ReactNode;
   reversed?: boolean;
-  className?: string;
+  styles?: SerializedStyles;
 };
 
 const Row: React.FC<RowProps> = (props: RowProps) => {
-  const { reversed, className } = props;
+  const { reversed, styles } = props;
   return (
     <div
-      css={{
-        display: "flex",
-        flexDirection: reversed ? "row-reverse" : "row"
-      }}
-      className={className}
+      css={[
+        {
+          display: "flex",
+          flexDirection: reversed ? "row-reverse" : "row"
+        },
+        styles
+      ]}
     >
       {props.children}
     </div>
@@ -25,7 +27,7 @@ const Row: React.FC<RowProps> = (props: RowProps) => {
 
 Row.defaultProps = {
   reversed: false,
-  className: undefined
+  styles: undefined
 };
 
 export default Row;

@@ -1,26 +1,28 @@
 import React from "react";
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+import { jsx, SerializedStyles } from "@emotion/core";
 
 type PageContainerProps = {
   children: React.ReactNode;
-  className?: string;
+  styles?: SerializedStyles;
 };
 
 const PageContainer: React.FC<PageContainerProps> = (
   props: PageContainerProps
 ) => {
-  const { className } = props;
+  const { styles } = props;
   return (
     <div
-      css={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "center",
-        width: "60%",
-        margin: "auto"
-      }}
-      className={className}
+      css={[
+        {
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          width: "100%",
+          margin: "auto"
+        },
+        styles
+      ]}
     >
       {props.children}
     </div>
@@ -28,7 +30,7 @@ const PageContainer: React.FC<PageContainerProps> = (
 };
 
 PageContainer.defaultProps = {
-  className: undefined
+  styles: undefined
 };
 
 export default PageContainer;

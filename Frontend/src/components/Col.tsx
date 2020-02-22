@@ -1,22 +1,24 @@
 import React from "react";
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, SerializedStyles } from "@emotion/core";
 
 type ColProps = {
   children: React.ReactNode;
   reversed?: boolean;
-  className?: string;
+  styles?: SerializedStyles;
 };
 
 const Col: React.FC<ColProps> = (props: ColProps) => {
-  const { reversed, className } = props;
+  const { reversed, styles } = props;
   return (
     <div
-      css={{
-        display: "flex",
-        flexDirection: reversed ? "column-reverse" : "column"
-      }}
-      className={className}
+      css={[
+        {
+          display: "flex",
+          flexDirection: reversed ? "column-reverse" : "column"
+        },
+        styles
+      ]}
     >
       {props.children}
     </div>
@@ -25,7 +27,7 @@ const Col: React.FC<ColProps> = (props: ColProps) => {
 
 Col.defaultProps = {
   reversed: false,
-  className: undefined
+  styles: undefined
 };
 
 export default Col;
