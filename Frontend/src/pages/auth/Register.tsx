@@ -1,35 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { RouteProps } from "react-router";
+
+import PageContainer from "components/PageContainer";
+import Col from "components/Col";
 
 type RegisterFormProps = {} & RouteProps;
 
 const RegisterForm: React.FC<RegisterFormProps> = (
   props: RegisterFormProps
 ) => {
-  const [first, setFirst] = useState("");
-  const [last, setLast] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPass, setConfirmPass] = useState("");
   return (
-    <div>
-      <label>First Name</label>
-      <input type="text" />
+    <PageContainer>
+      <Col>
+        <label>First Name</label>
+        <input type="text" />
 
-      <label>Last Name</label>
-      <input type="text" />
+        <label>Last Name</label>
+        <input type="text" />
 
-      <label>Email</label>
-      <input type="text" />
+        <label>Email</label>
+        <input type="text" />
 
-      <label>Password</label>
-      <input type="password" />
+        <label>Password</label>
+        <input type="password" />
 
-      <label>Confirm Password</label>
-      <input type="password" />
+        <label>Confirm Password</label>
+        <input type="password" />
 
-      <button>Register</button>
-    </div>
+        <button>Register</button>
+      </Col>
+    </PageContainer>
   );
 };
 
