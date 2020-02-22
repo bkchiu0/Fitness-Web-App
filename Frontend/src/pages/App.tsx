@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 
-import "./App.css";
-
 const App: React.FC = () => {
   return (
     <Router>
