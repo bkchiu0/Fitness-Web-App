@@ -11,8 +11,8 @@ const App: React.FC = () => {
         <Route exact path="/">
           <span> Landing page </span>
         </Route>
-        <Route exact path="/login" render={Login} />
-        <Route exact path="/register" render={Register} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
         <Route path="*">
           <span> 404 page </span>
         </Route>
