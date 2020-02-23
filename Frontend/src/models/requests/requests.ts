@@ -1,14 +1,7 @@
-import * as api from "models/requests/api";
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import axios, { AxiosResponse } from "axios";
 
-/**
- * Defines an axios method for http requests (ie. get, post, put, delete).
- * Define T to be the return data type of the axios request.
- */
-type AxiosMethod<T> = <T, R = AxiosResponse<T>>(
-  url: string,
-  config?: AxiosRequestConfig | undefined
-) => Promise<R>;
+import HttpMethods from "models/requests/http";
+import * as api from "models/requests/api";
 
 /**
  * Generic request builder where:
@@ -22,7 +15,7 @@ type AxiosMethod<T> = <T, R = AxiosResponse<T>>(
 class RequestBuilder<P, B, T> {
   private endpoint: string;
 
-  private httpMethod: AxiosMethod<T>;
+  private httpMethod: HttpMethods;
 
   private requestBody: B | undefined;
 
@@ -32,7 +25,7 @@ class RequestBuilder<P, B, T> {
 
   constructor() {
     this.endpoint = api.baseURL;
-    this.httpMethod = axios.get;
+    this.httpMethod = HttpMethods.GET;
     this.requestBody = undefined;
     this.requestParams = undefined;
   }
@@ -42,7 +35,7 @@ class RequestBuilder<P, B, T> {
     return this;
   }
 
-  public setHttpMethod(method: AxiosMethod<T>): RequestBuilder<P, B, T> {
+  public setHttpMethod(method: HttpMethods): RequestBuilder<P, B, T> {
     this.httpMethod = method;
     return this;
   }
@@ -62,16 +55,16 @@ class RequestBuilder<P, B, T> {
     return this;
   }
 
-  /**
-   * If request params are defined then use it, else default to request body.
-   */
-  public build(): Promise<AxiosResponse<T>> {
-    if (this.requestParams) {
-      return this.httpMethod<T>(this.endpoint, {
-        params: this.requestParams
-      });
-    }
-    return this.httpMethod<T>(this.endpoint, this.requestBody);
+  public async build(): Promise<AxiosResponse<T>> {
+    return axios.request<T>({
+      url: this.endpoint,
+      method: this.httpMethod,
+      params: this.requestParams,
+      data: this.requestBody,
+      headers: {
+        Authorization: `Bearer ${this.token}`
+      }
+    });
   }
 }
 
