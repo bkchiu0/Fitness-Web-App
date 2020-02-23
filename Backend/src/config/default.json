@@ -1,0 +1,5 @@
+{
+  "privateKey": "defaultPrivateKey",
+  "authHeader": "Authentication",
+  "defaultAPIPath": "/api"
+}

@@ -1,10 +1,12 @@
+import "module-alias/register";
 import express from "express";
 import mongoose from "mongoose";
 import compression from "compression";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import loader from "./loaders";
+import config from "config/default.json";
+import loader from "loaders";
 
 const app = express();
 const dbPort = 27017;
@@ -23,7 +25,11 @@ async function connect() {
   );
 
   // Enable CORS
-  app.use(cors());
+  app.use(
+    cors({
+      exposedHeaders: [config.authHeader]
+    })
+  );
   // Parses incoming requests as JSON if parsable
   app.use(bodyParser.json());
   // Compresses all response json bodies

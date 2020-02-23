@@ -1,10 +1,10 @@
 import { Router, Request, Response, RequestHandler } from "express";
 
-import IController from "../interfaces/IController";
-import IUser from "../interfaces/IUser";
-import { IError } from "../interfaces/IError";
-import { IUserStatsHandler } from "../handlers/userStats";
-import { IAction } from "../interfaces/IAction";
+import IController from "interfaces/IController";
+import IUser from "interfaces/IUser";
+import { IError } from "interfaces/IError";
+import { IUserStatsHandler } from "handlers/userStats";
+import { IAction } from "interfaces/IAction";
 
 class UserStatsController implements IController {
   private router: Router;

@@ -1,4 +1,4 @@
-import IUserStats from "../interfaces/IUserStats";
+import IUserStats from "interfaces/IUserStats";
 
 /**
  * Creates a new IUserStats object

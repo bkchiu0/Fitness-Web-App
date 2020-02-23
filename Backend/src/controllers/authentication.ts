@@ -1,10 +1,11 @@
 import { Router, Request, Response, RequestHandler } from "express";
 
-import IController from "../interfaces/IController";
-import { IAuthHandler } from "../handlers/authentication";
-import { IError } from "../interfaces/IError";
-import { IUserStatsHandler } from "../handlers/userStats";
-import IUser from "../interfaces/IUser";
+import IController from "interfaces/IController";
+import IUser from "interfaces/IUser";
+import config from "config/default.json";
+import { IAuthHandler } from "handlers/authentication";
+import { IError } from "interfaces/IError";
+import { IUserStatsHandler } from "handlers/userStats";
 
 class AuthController implements IController {
   private router: Router;
@@ -46,7 +47,7 @@ class AuthController implements IController {
 
       res
         .status(201)
-        .header("authentication", token)
+        .header(config.authHeader, token)
         .send();
     } catch (e) {
       this.handleError(e, res);
@@ -92,7 +93,7 @@ class AuthController implements IController {
 
       res
         .status(200)
-        .header("authentication", token)
+        .header("Authentication", token)
         .send();
     } catch (e) {
       this.handleError(e, res);

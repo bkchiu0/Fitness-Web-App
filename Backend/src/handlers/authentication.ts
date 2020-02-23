@@ -2,11 +2,11 @@ import jwt from "jsonwebtoken";
 import uuid from "uuid/v4";
 import bcrypt from "bcryptjs";
 
-import UserModel from "../models/user";
-import IUser from "../interfaces/IUser";
-import config from "../config/defualt.json";
-import TypedError from "../classes/TypedError";
-import { ErrorType } from "../interfaces/IError";
+import UserModel from "models/user";
+import IUser from "interfaces/IUser";
+import config from "config/default.json";
+import TypedError from "classes/TypedError";
+import { ErrorType } from "interfaces/IError";
 
 /**
  * The handler class for authentication, (sign in, sign out, register)

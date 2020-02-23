@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-import config from "../config/defualt.json";
-import TypedError from "../classes/TypedError.js";
-import { ErrorType } from "../interfaces/IError";
+import config from "config/default.json";
+import TypedError from "classes/TypedError.js";
+import { ErrorType } from "interfaces/IError";
 
 /**
  * Checks to see if the request is properly authenticated.
@@ -14,7 +14,7 @@ import { ErrorType } from "../interfaces/IError";
  */
 function authenticate(req: Request, res: Response, next: NextFunction) {
   // Try to get the token from the header
-  let token = req.header("x-access-token") || req.header("authorization");
+  let token = req.header("x-access-token") || req.header(config.authHeader);
 
   // If no token found, return unauthorized response (without going to the next middelware)
   if (!token)

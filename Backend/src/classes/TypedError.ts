@@ -1,4 +1,4 @@
-import { ErrorType, IError } from "../interfaces/IError";
+import { ErrorType, IError } from "interfaces/IError";
 
 class TypedError implements Error, IError {
   public readonly name: string;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import IUserStats from "../interfaces/IUserStats";
+import IUserStats from "interfaces/IUserStats";
 
 const UserStats = new mongoose.Schema({
   uuid: {

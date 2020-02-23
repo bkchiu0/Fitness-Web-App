@@ -1,9 +1,9 @@
-import UserStatsModel from "../models/userStats";
-import IUserStats from "../interfaces/IUserStats";
-import TypedError from "../classes/TypedError";
-import userStatsFactory from "../classes/UserStatsFactory";
-import { ErrorType } from "../interfaces/IError";
-import { IAction, ActionType } from "../interfaces/IAction";
+import UserStatsModel from "models/userStats";
+import IUserStats from "interfaces/IUserStats";
+import TypedError from "classes/TypedError";
+import userStatsFactory from "classes/UserStatsFactory";
+import { ErrorType } from "interfaces/IError";
+import { IAction, ActionType } from "interfaces/IAction";
 
 /**
  * The handler interface for UserStats
