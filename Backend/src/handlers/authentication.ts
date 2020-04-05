@@ -77,6 +77,11 @@ class AuthHandler implements IAuthHandler {
     }
 
     const account = await UserModel.findOne({ email: user.email });
+
+    if (!account) {
+      throw new TypedError(ErrorType.Validation, "Email does not exist.");
+    }
+
     const passMatch = await bcrypt.compare(user.password, account.password);
 
     if (passMatch) {
